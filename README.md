@@ -446,7 +446,7 @@ utils/
 
 ---
 
-# 📝 Naming Convention
+# Naming Convention
 
 ## Components
 
@@ -500,43 +500,91 @@ truncate.ts
 
 ---
 
-# 📦 Recommended Tech Stack
+#  UI Components
 
-- Next.js
-- TypeScript
-- Tailwind CSS
-- React
-- ESLint
-- Prettier
-- React Hook Form
-- Zod
-- Axios
-- Zustand
-- Framer Motion
-- TanStack Query
+This project uses **shadcn/ui** as its primary component library.
 
----
+### Why shadcn/ui?
 
-# 📈 Benefits of This Architecture
+Unlike traditional UI libraries, **shadcn/ui** doesn't install a package of pre-built components. Instead, it generates the component source code directly into your project, giving you full ownership and flexibility.
 
-- Easy to scale
-- Beginner-friendly
-- Clean folder organization
-- Better code separation
-- Reusable components
-- Feature isolation
-- Easier collaboration
-- Faster onboarding
-- Production-ready
+### Benefits
 
----
+- Fully customizable
+- Copy-and-own component model
+- Built on Radix UI primitives
+- Styled with Tailwind CSS
+- Excellent accessibility
+- Easy to modify and extend
+- No vendor lock-in
 
-# 📄 License
+### Installing a Component
 
-This project is open-source and available under the **MIT License**.
+Example: Install the Button component
 
----
+```bash
+npx shadcn@latest add button
+```
 
-## 👨‍💻 Author
+Example: Install multiple components
 
-Built as a scalable **Next.js Feature-Based Boilerplate** to serve as a solid starting point for modern web applications.
+```bash
+npx shadcn@latest add button input card dialog form
+```
+
+### Component Location
+
+All generated components are stored in:
+
+```
+src/components/ui/
+```
+
+Example:
+
+```
+components/
+└── ui/
+    ├── button.tsx
+    ├── input.tsx
+    ├── card.tsx
+    ├── dialog.tsx
+    ├── form.tsx
+    └── ...
+```
+
+### Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export default function Home() {
+  return <Button>Click Me</Button>;
+}
+```
+
+### Custom Components
+
+- Place reusable UI components from shadcn/ui inside `components/ui/`.
+- Build feature-specific components by composing these base components inside the appropriate feature folder.
+
+Example:
+
+```
+features/
+└── homepage/
+    └── components/
+        ├── Hero.tsx
+        ├── FeatureCard.tsx
+        └── CTASection.tsx
+```
+
+`Hero.tsx` can use:
+
+- Button
+- Card
+- Badge
+- Input
+- Dialog
+
+from `components/ui/` to create feature-specific interfaces.
