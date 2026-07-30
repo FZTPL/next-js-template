@@ -1,35 +1,29 @@
-#  Next.js Feature-Based Boilerplate
+# Next.js Feature-Based Architecture Boilerplate
 
-A scalable, feature-based boilerplate built with **Next.js App Router** and **TypeScript**. This template follows a modular architecture that keeps features isolated, promotes code reusability, and makes projects easier to maintain as they grow.
-
-Whether you're building a landing page, dashboard, blog system, CMS, or SaaS application, this template provides a clean foundation.
+A scalable and beginner-friendly Next.js boilerplate built using a feature-based architecture and Clean Architecture principles. This project separates business logic, application logic, infrastructure, and presentation layers to improve maintainability and scalability.
 
 ---
 
-##  Features
+## Tech Stack
 
-- Next.js App Router
--  Feature-based architecture
--  TypeScript support
--  Tailwind CSS ready
--  Reusable component structure
--  Modular folder organization
--  API route ready
--  Custom hooks support
--  Environment configuration
--  Production-ready structure
--  Responsive development ready
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- Shadcn/UI
+- ESLint
+- Prettier
 
 ---
 
-#  Project Structure
+## Project Structure
 
 ```
-template-next-js
-│
+.
 ├── app/
-│   ├── api/
-│   ├── dashboard/
+│   ├── auth/
+│   │   ├── login/
+│   │   └── register/
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── layout.tsx
@@ -38,34 +32,45 @@ template-next-js
 ├── components/
 │
 ├── constants/
-│   ├── ENV.ts
-│   └── ROUTES.ts
-│
-├── features/
-│   ├── about/
-│   └── homepage/
-│       ├── components/
-│       ├── constants/
-│       ├── hooks/
-│       ├── types/
-│       └── index.tsx
-│
-├── hooks/
 │
 ├── lib/
 │
-├── providers/
-│
 ├── public/
 │
-├── types/
-│
-├── utils/
+├── src/
+│   ├── application/
+│   │   ├── auth/
+│   │   └── inventory/
+│   │
+│   ├── domain/
+│   │   ├── auth/
+│   │   │   ├── AuthService.ts
+│   │   │   └── User.ts
+│   │   │
+│   │   └── inventory/
+│   │       └── Product.ts
+│   │
+│   ├── infrastructure/
+|   |    ├── auth/
+│   |    |    └── AuthRepository.ts
+│   |    |
+|   |    └── inventory/
+|   |        └── ProductRepository.ts
+│   │
+│   └── presentation/
+│       └── features/
+│           └── homepage/
+│               ├── components/
+│               ├── constant/
+│               ├── hooks/
+│               ├── types/
+│               └── index.tsx
 │
 ├── .env.example
 ├── .gitignore
+├── next.config.ts
 ├── package.json
-└── README.md
+└── tsconfig.json
 ```
 
 ---
@@ -74,161 +79,55 @@ template-next-js
 
 ## app/
 
-Contains the application's routing using the **Next.js App Router**.
+Contains all routes using the Next.js App Router.
 
 Example:
 
-```
-app/
-    page.tsx
-    layout.tsx
-    dashboard/
-    api/
-```
-
-This folder should only contain:
-
-- Pages
-- Layouts
-- Route Handlers
-- Loading UI
-- Error Pages
-
-Avoid writing business logic here.
-
----
-
-## features/
-
-The **heart of the project**.
-
-Each feature contains everything related to itself.
-
-Example:
-
-```
-features/
-    homepage/
-```
-
-Inside every feature:
-
-```
-homepage/
-
-components/
-
-hooks/
-
-constants/
-
-types/
-
-index.tsx
-```
-
-This keeps features completely independent.
+- Home Page
+- Login
+- Register
+- Layout
+- Global CSS
 
 ---
 
 ## components/
 
-Contains reusable UI shared across the application.
+Stores reusable UI components that can be shared across multiple features.
 
-Examples
+Examples:
 
-```
-Button
-
-Input
-
-Navbar
-
-Footer
-
-Card
-
-Modal
-
-Loader
-```
-
-If a component belongs only to one feature, place it inside that feature instead.
+- Button
+- Input
+- Card
+- Modal
+- Loader
 
 ---
 
 ## constants/
 
-Application-wide constants.
+Contains application-wide constants.
 
-Example:
+Examples:
 
-```
-ENV.ts
-
-ROUTES.ts
-```
-
-Use this folder to store:
-
-- Route names
-- Environment variables
-- Static values
-- Application configuration
-
----
-
-## hooks/
-
-Reusable custom hooks used across multiple features.
-
-Example
-
-```
-useDebounce
-
-useLocalStorage
-
-useWindowSize
-```
+- Navigation Links
+- API URLs
+- Roles
+- Theme Colors
 
 ---
 
 ## lib/
 
-Contains project-wide utilities and integrations.
+Contains shared utilities.
 
-Examples
+Examples:
 
-```
-axios.ts
-
-fetch.ts
-
-auth.ts
-
-database.ts
-
-api.ts
-```
-
----
-
-## providers/
-
-Application Providers.
-
-Example
-
-```
-ThemeProvider
-
-AuthProvider
-
-QueryProvider
-```
-
-These are usually wrapped inside `layout.tsx`.
+- API Client
+- Helper Functions
+- Validation
+- Authentication Helpers
 
 ---
 
@@ -236,309 +135,235 @@ These are usually wrapped inside `layout.tsx`.
 
 Stores static assets.
 
-```
-images/
+Examples:
 
-icons/
-
-fonts/
-
-logo.svg
-```
+- Images
+- SVG Icons
+- Fonts
 
 ---
 
-## types/
+# Source Architecture
 
-Global TypeScript types.
-
-Example
+The `src` directory follows a Clean Architecture approach.
 
 ```
-User.ts
-
-Api.ts
-
-Common.ts
+Presentation
+        ↓
+Application
+        ↓
+Domain
+        ↓
+Infrastructure
 ```
 
-Feature-specific types should stay inside their respective feature folders.
+Each layer has a single responsibility.
 
 ---
 
-## utils/
+## application/
 
-Reusable helper functions.
+Contains application use cases.
 
-Example
+Responsibilities:
 
-```
-formatDate()
-
-capitalize()
-
-truncate()
-
-slugify()
-```
-
-Utilities should not contain React code.
-
----
-
-#  Feature-Based Architecture
-
-Each feature is self-contained.
+- Business workflows
+- Coordinating services
+- Managing application logic
+- Calling repositories
+- Authentication actions
 
 Example:
 
 ```
-features/
-    homepage/
-        components/
-        hooks/
-        constants/
-        types/
-        index.tsx
-```
+application/
+    auth/
+        login.ts
+        register.ts
 
-This structure makes it easy to:
-
-- add new features
-- remove features
-- scale the project
-- reduce dependencies between modules
-
----
-
-# Getting Started
-
-## 1. Clone the repository
-
-```bash
-git clone <repository-url>
+    inventory/
+        createProduct.ts
+        updateProduct.ts
 ```
 
 ---
 
-## 2. Navigate into the project
+## domain/
 
-```bash
-cd template-next-js
+The core of the application.
+
+Contains business rules only.
+
+### Entities
+
+Example:
+
 ```
+User.ts
+Product.ts
+```
+
+Entities define the application's core models.
+
+### Services
+
+Example:
+
+```
+AuthService.ts
+```
+
+Contains business logic independent of frameworks.
+
+The domain layer should never depend on React, Next.js, or APIs.
 
 ---
 
-## 3. Install dependencies
+## infrastructure/
 
-Using npm
+Handles external services.
 
-```bash
-npm install
-```
+Examples:
 
-Using pnpm
-
-```bash
-pnpm install
-```
-
-Using yarn
-
-```bash
-yarn
-```
+- API requests
+- Database
+- Repository implementations
+- Authentication providers
+- Local Storage
+- Third-party SDKs
 
 ---
 
-## 4. Configure environment variables
+## presentation/
 
-Copy the example file.
+Contains everything related to the user interface.
 
-```bash
-cp .env.example .env.local
-```
+Each feature has its own folder.
 
-Update the required values.
-
----
-
-## 5. Start the development server
-
-```bash
-npm run dev
-```
-
-or
-
-```bash
-pnpm dev
-```
-
-Visit
+Example:
 
 ```
-http://localhost:3000
+homepage/
 ```
 
----
+Inside every feature:
 
-#  Development Guidelines
+### components/
 
-## Add a new feature
+Feature-specific UI.
 
-Create a new folder inside
-
-```
-features/
-```
-
-Example
+Example:
 
 ```
-features/
-    authentication/
-```
-
-Recommended structure
-
-```
-authentication/
-
-components/
-
-hooks/
-
-constants/
-
-types/
-
-index.tsx
-```
-
----
-
-## Add reusable components
-
-```
-components/
-    Button.tsx
-    Modal.tsx
-```
-
----
-
-## Add global hooks
-
-```
-hooks/
-    useDebounce.ts
-```
-
----
-
-## Add utilities
-
-```
-utils/
-    formatDate.ts
-```
-
----
-
-# Naming Convention
-
-## Components
-
-```
-Navbar.tsx
-
 Hero.tsx
-
+Navbar.tsx
+Footer.tsx
 FeatureCard.tsx
 ```
 
 ---
 
-## Hooks
+### constant/
+
+Constants used only within the feature.
+
+Example:
 
 ```
+heroContent.ts
+statistics.ts
+```
+
+---
+
+### hooks/
+
+Feature-specific custom hooks.
+
+Example:
+
+```
+useHero.ts
+useTestimonials.ts
+```
+
+---
+
+### types/
+
+Feature-specific TypeScript types.
+
+Example:
+
+```
+Hero.ts
+Feature.ts
+```
+
+---
+
+### index.tsx
+
+Acts as the feature entry point.
+
+Usually renders all feature components.
+
+---
+
+# Naming Convention
+
+### Components
+
+```
+PascalCase
+
+Navbar.tsx
+HeroSection.tsx
+ProductCard.tsx
+```
+
+### Hooks
+
+```
+camelCase
+
 useAuth.ts
-
-useTheme.ts
+useProduct.ts
 ```
 
----
-
-## Constants
+### Constants
 
 ```
-ROUTES.ts
+UPPER_SNAKE_CASE
 
-ENV.ts
+API_URL
+MAX_PRODUCTS
+USER_ROLE
 ```
 
----
-
-## Types
+### Types
 
 ```
+PascalCase
+
 User.ts
-
-Api.ts
+Product.ts
 ```
 
----
-
-## Utility Functions
+### Utility Functions
 
 ```
+camelCase
+
 formatDate.ts
-
-truncate.ts
+generateToken.ts
 ```
 
 ---
 
-#  UI Components
+# Using Shadcn/UI
 
-This project uses **shadcn/ui** as its primary component library.
-
-### Why shadcn/ui?
-
-Unlike traditional UI libraries, **shadcn/ui** doesn't install a package of pre-built components. Instead, it generates the component source code directly into your project, giving you full ownership and flexibility.
-
-### Benefits
-
-- Fully customizable
-- Copy-and-own component model
-- Built on Radix UI primitives
-- Styled with Tailwind CSS
-- Excellent accessibility
-- Easy to modify and extend
-- No vendor lock-in
-
-### Installing a Component
-
-Example: Install the Button component
-
-```bash
-npx shadcn@latest add button
-```
-
-Example: Install multiple components
-
-```bash
-npx shadcn@latest add button input card dialog form
-```
-
-### Component Location
-
-All generated components are stored in:
-
-```
-src/components/ui/
-```
+Shadcn components should be placed inside the `components/ui` folder.
 
 Example:
 
@@ -549,42 +374,86 @@ components/
     ├── input.tsx
     ├── card.tsx
     ├── dialog.tsx
-    ├── form.tsx
     └── ...
 ```
 
-### Usage
-
-```tsx
-import { Button } from "@/components/ui/button";
-
-export default function Home() {
-  return <Button>Click Me</Button>;
-}
-```
-
-### Custom Components
-
-- Place reusable UI components from shadcn/ui inside `components/ui/`.
-- Build feature-specific components by composing these base components inside the appropriate feature folder.
+Feature-specific wrappers or composed components should remain inside the corresponding feature folder.
 
 Example:
 
 ```
-features/
-└── homepage/
-    └── components/
-        ├── Hero.tsx
-        ├── FeatureCard.tsx
-        └── CTASection.tsx
+presentation/
+└── features/
+    └── homepage/
+        └── components/
+            HeroButton.tsx
 ```
 
-`Hero.tsx` can use:
+This keeps generated UI components centralized while allowing features to compose them as needed.
 
-- Button
-- Card
-- Badge
-- Input
-- Dialog
+---
 
-from `components/ui/` to create feature-specific interfaces.
+# Getting Started
+
+## Clone the Repository
+
+```bash
+git clone <repository-url>
+```
+
+---
+
+## Install Dependencies
+
+Using npm
+
+```bash
+npm install
+```
+
+---
+
+## Run Development Server
+
+```bash
+npm run dev
+```
+
+Open:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+## Start Production Server
+
+```bash
+npm start
+```
+
+---
+
+# Environment Variables
+
+Create a `.env.local` file.
+
+Example:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+DATABASE_URL=
+JWT_SECRET=
+```
+
+---
+
