@@ -1,11 +1,12 @@
+
+import DashboardLayout from '@/src/presentation/features/layout/DashboardLayout'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>
-      
-      <p className="text-3xl text-red-900">Home</p>
-    </div>
+    <DashboardLayout>
+      <div className='flex h-screen w-full' />
+    </DashboardLayout>
   )
 }
 
